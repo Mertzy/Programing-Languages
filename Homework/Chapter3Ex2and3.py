@@ -15,6 +15,6 @@ def main():
 			
 	print(evenList)
 			
-main()
+#main()
 		
-#disassembler.disassemble(main)
+disassembler.disassemble(main)
