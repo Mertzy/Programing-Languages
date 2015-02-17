@@ -5,16 +5,24 @@ import disassembler
 def main():
 
 	x = int(input("Enter an integer: "))
+	
 	evenList = []
 	
-	for i in range(x+1):
+	if isinstance(x, int):
 	
-		if i%2==0 and i!=0:
+		for i in range(x+1):
+	
+			if i%2==0 and i!=0:
 		
-			evenList.append(i)
-			
-	print(evenList)
-			
-#main()
+				evenList.append(i)
 		
-disassembler.disassemble(main)
+			
+		print(evenList)
+		
+	else:
+	
+		print("You didn't enter an integer!")
+			
+main()
+		
+#disassembler.disassemble(main)
