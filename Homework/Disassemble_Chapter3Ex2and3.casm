@@ -29,10 +29,6 @@ label00:  FOR_ITER                 label01
           LOAD_CONST                     4
           COMPARE_OP                     2
           POP_JUMP_IF_FALSE        label00
-          LOAD_FAST                      3
-          LOAD_CONST                     4
-          COMPARE_OP                     3
-          POP_JUMP_IF_FALSE        label00
           LOAD_FAST                      1
           LOAD_ATTR                      3
           LOAD_FAST                      3

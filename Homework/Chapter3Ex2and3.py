@@ -16,7 +16,7 @@ def main():
 	
 		for i in range(y+1):
 	
-			if i%2==0 and i!=0:
+			if i%2==0:
 		
 				evenList.append(i)
 		
@@ -27,6 +27,6 @@ def main():
 
 	print(evenList)
 
-main()
+#main()
 		
-#disassembler.disassemble(main)
+disassembler.disassemble(main)

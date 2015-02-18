@@ -1,0 +1,53 @@
+Function: main/0
+Constants: None, "Enter an integer: ", 1, 2, 0, "You didn't enter an integer!"
+Locals: x, evenList, y, i
+Globals: input, int, range, append, print
+BEGIN
+          LOAD_GLOBAL                    0  ;loads input onto the TOS
+          LOAD_CONST                     1	;loads "Enter an integer: " onto the TOS
+          CALL_FUNCTION                  1	;performs the input function on "Enter an integer: ", pops the function and it's argument off the stack and pushes the result onto TOS
+          STORE_FAST                     0	;stores the result of the previous input function into x
+          BUILD_LIST                     0	;builds a list and pushes it onto the stack
+          STORE_FAST                     1	;stores the list in evenList
+          SETUP_EXCEPT             label03	;pushes a try block from a try-except clause onto the block stack with a pointer to label03
+          LOAD_GLOBAL                    1	;pushes int onto the stack
+          LOAD_FAST                      0	;pushes x onto the stack
+          CALL_FUNCTION                  1	;performs the int function on x and pushes the result onto the stack after popping the function and its parameter off the stack
+          STORE_FAST                     2	;stores the result of the previous function in y
+          SETUP_LOOP               label02	;pushes a block for a loop onto the block stack. The block spans from the current instruction to label02
+          LOAD_GLOBAL                    2	;pushes range onto the stack
+          LOAD_FAST                      2	;pushes a reference to y onto the stack
+          LOAD_CONST                     2	;pushes 1 onto the stack
+          BINARY_ADD               			;pops off y and 1 off the stack and adds them together and then pushes the result onto the stack
+          CALL_FUNCTION                  1	;performs the range function on y+1, pops both the function and y+1 off the stack, and pushes the result onto the stack
+          GET_ITER                 			;implements TOS=iter(TOS)
+label00:  FOR_ITER                 label01	;takes the iterator and calls its __next__() method.  If this yields a new value, push it on the stack. If the iterator indicates it is exhausted then TOS is popped, and the PC is set to label01
+          STORE_FAST                     3	;stores TOS into i
+          LOAD_FAST                      3	;pushes a reference to i onto the stack
+          LOAD_CONST                     3	;pushes 2 onto the stack
+          BINARY_MODULO            			;performs the mod operator on i and 2 (aka i%2)
+          LOAD_CONST                     4	;pushes 0 onto the stack
+          COMPARE_OP                     2	;pops off 0 and i%2 off the stack and performs the == comparison boolean operation and pushes the result onto the stack
+          POP_JUMP_IF_FALSE        label00	;If TOS is false, sets the bytecode counter to label00
+          LOAD_FAST                      1	;pushes a reference to evenList onto the stack
+          LOAD_ATTR                      3	;replaces TOS with evenList.append
+          LOAD_FAST                      3	;pushes a reference to i onto the stack
+          CALL_FUNCTION                  1	;pops evenList.append and i off the stack and performs evenList.append(i) and pushes the return value (aka None) onto the stack
+          POP_TOP                  			;pops None off the stack
+          JUMP_ABSOLUTE            label00	;sets bytecode counter to label00
+label01:  POP_BLOCK      					;pops the if-then block off the block stack         
+label02:  POP_BLOCK                			;pops the for-loop block off the block stack
+          JUMP_FORWARD             label04	;sets PC to label04
+label03:  POP_TOP                			;Except Clause - pops the evenList off the stack  
+          POP_TOP                           ;Except Clause - pops x off the stack                
+          LOAD_GLOBAL                    4	;pushes print onto the stack
+          LOAD_CONST                     5	;pushes "You didn't enter an integer!" onto the stack
+          CALL_FUNCTION                  1	;pops off print and "You didn't enter an integer!" off the stack and performs print("You didn't enter an integer!") and pushes the return value (aka None) onto the stack
+          POP_TOP                  			;pops None off the stack
+          POP_EXCEPT               			;pops the exception handler block off the block stack
+          END_FINALLY              			;terminates a finally clause. The interpreter recalls whether the exception has to be re-raised, or whether the function returns, and continues with the outer-next block
+label04:  LOAD_GLOBAL                    4	;pushes print onto the stack
+          LOAD_FAST                      1	;pushes a reference to evenList onto the stack
+          CALL_FUNCTION                  1	;pops off print and evenList off the stack and performs print(evenList) and pushes the return value (aka None) onto the stack
+          RETURN_VALUE             			;returns with None to the caller of the function, effectively ending the program
+END
