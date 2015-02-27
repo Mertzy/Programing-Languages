@@ -30,3 +30,5 @@ def main():
 #main()
 		
 disassembler.disassemble(main)
+
+#Juan Navarro and I worked together for these exercises. 
