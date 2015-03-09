@@ -1,0 +1,148 @@
+Function: main/0
+Constants: None, "type:", "str", "repr", "bool:", "int:", 6, "float:", 6.2, "str:", "Hello", "print:", "iter:", "input:", "len:", 1, "hello", "list:", "list_iterator:", "tuple:", "int type:", "Denise", "Kent", "dict:", "dict_keyiterator:", False, (1, 'hello')
+Locals: l, i, t, d
+Globals: print, False, repr, iter, input, len, int
+BEGIN
+          LOAD_GLOBAL                    0
+          LOAD_CONST                     1
+          LOAD_CONST                     2
+          LOAD_CONST                     3
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                     4
+          LOAD_CONST                    25
+          LOAD_GLOBAL                    2
+          LOAD_CONST                    25
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                     5
+          LOAD_CONST                     6
+          LOAD_GLOBAL                    2
+          LOAD_CONST                     6
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                     7
+          LOAD_CONST                     8
+          LOAD_GLOBAL                    2
+          LOAD_CONST                     8
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                     9
+          LOAD_CONST                    10
+          LOAD_GLOBAL                    2
+          LOAD_CONST                    10
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    11
+          LOAD_GLOBAL                    0
+          LOAD_GLOBAL                    2
+          LOAD_GLOBAL                    0
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    12
+          LOAD_GLOBAL                    3
+          LOAD_GLOBAL                    2
+          LOAD_GLOBAL                    3
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    13
+          LOAD_GLOBAL                    4
+          LOAD_GLOBAL                    2
+          LOAD_GLOBAL                    4
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    14
+          LOAD_GLOBAL                    5
+          LOAD_GLOBAL                    2
+          LOAD_GLOBAL                    5
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_CONST                    15
+          LOAD_CONST                    16
+          BUILD_LIST                     2
+          STORE_FAST                     0
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    17
+          LOAD_FAST                      0
+          LOAD_GLOBAL                    2
+          LOAD_FAST                      0
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    3
+          LOAD_FAST                      0
+          CALL_FUNCTION                  1
+          STORE_FAST                     1
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    18
+          LOAD_FAST                      1
+          LOAD_GLOBAL                    2
+          LOAD_FAST                      1
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_CONST                    26
+          STORE_FAST                     2
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    19
+          LOAD_FAST                      2
+          LOAD_GLOBAL                    2
+          LOAD_FAST                      2
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    20
+          LOAD_GLOBAL                    6
+          LOAD_GLOBAL                    2
+          LOAD_GLOBAL                    6
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          BUILD_MAP                      2
+          LOAD_CONST                    21
+          LOAD_CONST                    22
+          STORE_MAP                
+          LOAD_CONST                     8
+          LOAD_CONST                     6
+          STORE_MAP                
+          STORE_FAST                     3
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    23
+          LOAD_FAST                      3
+          LOAD_GLOBAL                    2
+          LOAD_FAST                      3
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_GLOBAL                    3
+          LOAD_FAST                      3
+          CALL_FUNCTION                  1
+          STORE_FAST                     1
+          LOAD_GLOBAL                    0
+          LOAD_CONST                    24
+          LOAD_FAST                      1
+          LOAD_GLOBAL                    2
+          LOAD_FAST                      1
+          CALL_FUNCTION                  1
+          CALL_FUNCTION                  3
+          POP_TOP                  
+          LOAD_CONST                     0
+          RETURN_VALUE             
+END
