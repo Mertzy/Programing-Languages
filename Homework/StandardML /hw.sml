@@ -27,8 +27,12 @@ fun swap [] = []
 
 
 (* Ex 14 *)
+(*
 fun rotate(rotator, inputList) = inputList
 	| rotate(rotator, g1 :: g2 :: g3) = 
-	
-	
+*)
+
+
+(* Ex 15 *)
+
 	
