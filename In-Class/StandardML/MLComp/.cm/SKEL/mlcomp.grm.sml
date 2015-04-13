@@ -1,0 +1,2 @@
+Skeleton 5
+ae"mlcompLrValsFun"i2aä¢Token"gp1c"TOKEN"f±ÿjh2aä¢ParserData"h7aä¢Header"h2egp1d"MLAS"f3d"Int"ä¢List"d"TextIO"aä¢LrTable"gp2ÿÿ0Caÿgpÿ*båçğ±ÿ0f6d"Char"Cÿd"String"d"General"ÿ0d"Array"Nbåçğ±ÿaä¢MlyValue"è0ad"EC"h2ÿ‚bÿ‚?æ±ÿƒad"Actions"h2bÿ‚?f3ÿÿ0ÿƒÿƒ#Naä¢Tokens"jÿƒçğ±ã¢mlcomp_TOKENS"h2aÿ1gp1c"PARSER_DATA"aÿ„	ÿ„

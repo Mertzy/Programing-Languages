@@ -38,23 +38,34 @@ fun delete(0, inputString) = String.substring(inputString,1,(String.size(inputSt
 
 
 (* Ex 16 *)
-fun intpow(x,0) = 1 | intpow(x,1) = x | intpow(x, n div 2) * intpow(x, n - (n div 2))
+fun intpow(x,0) = 1
+    | intpow(x,1) = x
+    | intpow(x,n) = intpow(x, n div 2) * intpow(x, n - (n div 2))
 
 
 (* Ex 17 *)
-fun rotate2(pos, inputList) = 
-	let fun helper(0, temp, num) = List.take((temp @ List.rev(num)), List.length(lst1))
-        | helper(n, nil, num) = []
-        | helper(n, h::t, num) = helper(n-1, t, h::num)
+fun rotate2(n1, lst1) = 
+    let fun helper(0, lst2, acc) = List.take((lst2 @ List.rev(acc)), List.length(lst1))
+        | helper(n2, nil, acc) = [] 
+        | helper(n2, h::t, acc) = helper(n2-1, t, h::acc)
     in
         helper(n1, lst1, [])
     end
 
 
-(* Ex 18 *)
+(* Ex 18 *) (* ? *)
+fun rotate3(n1,nil) = []
+    | rotate3(n1,lst1) = 
+    let fun helper(0,lst2,acc) = lst2 @ List.rev(acc) 
+        | helper(n2,h::t,acc) = helper(n2-1,t,h::acc)
+    in
+        helper(n1 mod (List.length(lst1)), lst1, [])
+    end
 
-
-(* Ex 19 *)
+(* Ex 19 *) (* Currying? Unsure *)
+fun delete2 (n) s = 
+    if n = 0 then String.substring(s,1,(String.size(s)-1))
+    else String.substring(s,0,1) ^ delete2 (n-1) (String.substring(s,1,(String.size(s)-1)))
 
 
 (* Ex 20 *)
@@ -74,15 +85,18 @@ fun firstLowers(inputList) = List.filter(fn strn => Char.isLower(String.sub(strn
 (* Ex 23 *)
 fun allCaps(inputString) = String.map Char.toUpper inputString
 
-(* Ex 24 
-fun find(s,file) = 
-	let val useFile = TextIO.openIn(file)
-	let val t = TextIO.inputLine
-	in
-		case t of
-			SOME u => 
-			| NONE => 
-	end *)
+(* Ex 24 *) (* Unsure on how this one works exactly *)
+fun find(s1,file) = 
+    let val fileIn = TextIO.openIn(file)
+    in
+        let fun readFile(NONE, stracc) = stracc
+            | readFile(SOME s2, stracc) = 
+                if String.isSubstring s1 s2 then readFile(TextIO.inputLine(fileIn), stracc ^ s2) 
+                else readFile(TextIO.inputLine(fileIn), stracc)
+            in 
+                TextIO.output(TextIO.stdOut, readFile(TextIO.inputLine(fileIn),""))
+            end
+    end
 
 
 (* Ex 25 *)

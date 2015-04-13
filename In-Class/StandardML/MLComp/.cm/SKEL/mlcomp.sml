@@ -1,0 +1,2 @@
+Skeleton 5
+ad"mlcomp"h5Cegp1d"MLAS"f5Cd"OS"d"Int"d"List"d"Option"d"TextIO"Naä¢mlcompLrVals"jh1aä¢Token"gp2ä¢LrParser"ÿgp1e"mlcompLrValsFun"aä¢mlcompLex"jh1aä¢Tokens"gp2ÿÿ‚gp1e"mlcompLexFun"ad"mlcompParser"jh3ad"Lex"gp1ÿ‚aÿgp1ÿaä¢ParserData"gp2ÿÿƒ"gp1e"Join"N
