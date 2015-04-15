@@ -109,7 +109,7 @@ open MLAS;
        | nameOf(listcon(L)) = "listcon"
        | nameOf(str(s)) = "str"
        | nameOf(infixexp(operator,e1,e2)) = operator
-       | nameOf(negate(e)) = "unary negation"
+       | nameOf(negate(e)) = "~"
        | nameOf(tuplecon(L)) = "tuplecon"
        | nameOf(expsequence(L)) = "expsequence"
        | nameOf(letdec(L1,L2)) = "letdec"
@@ -147,8 +147,8 @@ open MLAS;
              and con(int(i)) = [i]
                | con(boolval(b)) = [if b = "true" then "True" else "False"]
                | con(id(name)) = []
-               | con(negate(t)) = (con, t)
                | con(infixexp(operator,t1,t2)) = (con t1) @ (con t2)
+               | con(negate(e)) = (con e)
                | con(expsequence(L)) = (List.foldr (fn (x,y) => (con x) @ y) [] L)
                | con(letdec(d,L2)) = (decconsts d) @ (List.foldr (fn (x,y) => (con x) @ y) [] L2)   
                | con(apply(t1,t2)) = (con t1) @ (con t2)
@@ -216,8 +216,8 @@ open MLAS;
                | bindingsOf(listcon(L),bindings,scope) = (List.map (fn x => (bindingsOf(x,bindings,scope))) L; ())
                | bindingsOf(tuplecon(L),bindings,scope) = (List.map (fn x => (bindingsOf(x,bindings,scope))) L; ())
                | bindingsOf(apply(exp1,exp2),bindings,scope) = (bindingsOf(exp1,bindings,scope); bindingsOf(exp2,bindings,scope))
-               | bindingsOf(negate(exp1)) = bindingsOf(exp1)
                | bindingsOf(infixexp(operator,exp1,exp2),bindings,scope) = (bindingsOf(exp1,bindings,scope); bindingsOf(exp2,bindings,scope))
+               | bindingsOf(negate(exp),bindings,scope) = bindingsOf(exp,bindings,scope)
                | bindingsOf(handlexp(exp,L),bindings,scope) =  
                  (bindingsOf(exp,bindings,scope); 
                   List.map (fn match(pat,exp) => 
@@ -454,7 +454,14 @@ open MLAS;
          TextIO.output(outFile, indent^"BUILD_FUNLIST 0\n")
             
        | codegen(id(name),outFile,indent,consts,locals,freeVars,cellVars,globals,env,globalBindings,scope) = 
-         load(name,outFile,indent,locals,freeVars,cellVars,globals,env)                      
+         load(name,outFile,indent,locals,freeVars,cellVars,globals,env)  
+
+       | codegen(negate(e),outFile,indent,consts,locals,freeVars,cellVars,globals,env,globalBindings,scope) = 
+         let val _ = codegen(int("0"),outFile,indent,consts,locals,freeVars,cellVars,globals,env,globalBindings,scope)
+             val _ = codegen(e,outFile,indent,consts,locals,freeVars,cellVars,globals,env,globalBindings,scope)
+         in
+             TextIO.output(outFile,indent^"BINARY_SUBTRACT\n")
+         end                    
 
        | codegen(apply(t1,t2),outFile,indent,consts,locals,freeVars,cellVars,globals,env,globalBindings,scope) =
          let val _ = codegen(t1,outFile,indent,consts,locals,freeVars,cellVars,globals,env,globalBindings,scope)
@@ -826,9 +833,9 @@ open MLAS;
                | functions(tuplecon(L)) = (List.map (fn x => (functions x)) L; ())
                | functions(apply(exp1,exp2)) = (functions exp1;functions exp2)
                | functions(infixexp(operator,exp1,exp2)) = (functions exp1;functions exp2)
+               | functions(negate(exp)) = functions exp
                | functions(handlexp(exp,L)) = (functions exp; List.map (fn (match(pat,exp)) => functions exp) L; ())
                | functions(raisexp(e)) = (functions e)
-
                | functions(expsequence(L)) = (List.map (fn x => (functions x)) L; ())
                | functions(letdec(d,L2)) = 
                  let val newbindings = #1(localBindings(letdec(d,[]),env,globalBindings,scope))
@@ -924,6 +931,7 @@ open MLAS;
                | functions(tuplecon(L)) = (List.map (fn x => (functions x)) L; ())
                | functions(apply(exp1,exp2)) = (functions exp1;functions exp2)
                | functions(infixexp(operator,exp1,exp2)) = (functions exp1;functions exp2)
+               | functions(negate(exp)) = functions exp
                | functions(handlexp(exp,L)) = (functions exp;List.map (fn (match(pat,exp)) => functions exp) L; ())
                | functions(raisexp(e)) = (functions e)
 
@@ -994,6 +1002,11 @@ open MLAS;
                | printList(write,indent,h::t) = (write(indent,h); print(indent^","); printList(write,indent,t))
 
              fun writeExp(indent,int(i)) = print("int('"^i^"')")
+
+               | writeExp(indent,negate(exp)) = 
+                      (print("negate(");
+                      writeExp(indent,exp);
+                      print(")"))
 
                | writeExp(indent,boolval(b)) = print("bool('"^b^"')")
 
@@ -1069,6 +1082,8 @@ open MLAS;
                      (println(indent^"func('anon@"^Int.toString(i)^"',["); 
                       printList(writeMatch,indent^"   ",L); 
                       print("\n"^indent^"])"))
+
+               
 
              and writeMatch(indent,match(pat,exp)) = 
                      (print(indent^"match(");
