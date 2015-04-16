@@ -1,0 +1,8 @@
+letdec(
+   bindval(idpat('x'),int('4')),
+   [
+apply(apply(apply(apply(id('println'),id('case')),id('x')),id('of')),    func('anon@2',[
+       match(intpat(1)       ,str('"hello"')       )       ,       match(intpat(2)       ,str('"how"')       )       ,       match(intpat(3)       ,str('"are"')       )       ,       match(intpat(4)       ,str('"you"')       )
+    ]))
+   ])
+.
