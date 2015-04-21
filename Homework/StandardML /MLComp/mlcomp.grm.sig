@@ -13,6 +13,9 @@ val String: (string) *  'a * 'a -> (svalue,'a) token
 val Rec:  'a * 'a -> (svalue,'a) token
 val And:  'a * 'a -> (svalue,'a) token
 val Raise:  'a * 'a -> (svalue,'a) token
+val Negate:  'a * 'a -> (svalue,'a) token
+val Of:  'a * 'a -> (svalue,'a) token
+val Case:  'a * 'a -> (svalue,'a) token
 val Handle:  'a * 'a -> (svalue,'a) token
 val Do:  'a * 'a -> (svalue,'a) token
 val While:  'a * 'a -> (svalue,'a) token
@@ -48,7 +51,6 @@ val Minus:  'a * 'a -> (svalue,'a) token
 val Plus:  'a * 'a -> (svalue,'a) token
 val RParen:  'a * 'a -> (svalue,'a) token
 val LParen:  'a * 'a -> (svalue,'a) token
-val Negate:  'a * 'a -> (svalue,'a) token
 val EOF:  'a * 'a -> (svalue,'a) token
 end
 signature mlcomp_LRVALS=

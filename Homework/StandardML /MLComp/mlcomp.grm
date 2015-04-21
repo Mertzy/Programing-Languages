@@ -63,7 +63,6 @@ fun makeMatchList (nil) = raise emptyDecList
 %pure (* no side-effects in actions *)
 
 %term EOF
-    | Negate
     | LParen
     | RParen
     | Plus
@@ -99,6 +98,9 @@ fun makeMatchList (nil) = raise emptyDecList
     | While
     | Do
     | Handle
+    | Case
+    | Of
+    | Negate
     | Raise
     | And
     | Rec
@@ -133,7 +135,7 @@ fun makeMatchList (nil) = raise emptyDecList
 %right SetEqual
 %left Plus Minus Append Equals NotEqual
 %left Times Div Mod Greater Less GreaterEqual LessEqual 
-%right ListCons Negate
+%right ListCons
 %right Exclaim
 
 %%
@@ -169,6 +171,7 @@ Exp : Con                                                  (Con)
                 (List.hd (List.foldr (fn (x,y) => [letdec(x,y)]) ExpSequence DecSeq))
     | Raise Exp                                            (raisexp(Exp))
     | Exp Handle MatchExp                                  (handlexp(Exp,MatchExp))
+    | Case Exp Of MatchExp  (caseof(Exp,MatchExp))
     | If Exp Then Exp Else Exp                             (ifthen(Exp1,Exp2,Exp3))
     | While Exp Do Exp                                     (whiledo(Exp1,Exp2))
 

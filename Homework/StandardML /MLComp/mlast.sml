@@ -3,8 +3,6 @@ struct
 
 datatype
     exp = int of string
-        | negate of exp
-        | caseof of exp * match list
         | ch of string
         | str of string
         | boolval of string
@@ -17,10 +15,11 @@ datatype
         | letdec of dec * (exp list)
         | raisexp of exp
         | handlexp of exp * match list
+        | caseof of exp * match list
         | ifthen of exp * exp * exp
         | whiledo of exp * exp
+        | negate of exp
         | func of int * match list
-        
   and
     match = match of pat * exp
   and

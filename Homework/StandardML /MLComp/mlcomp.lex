@@ -66,9 +66,8 @@ period=[\.];
 "!" => (Tokens.Exclaim(!pos,!pos));
 ":=" => (Tokens.SetEqual(!pos,!pos));
 
-{in} => (Tokens.Case(!pos, !pos));
-{tilde} => (Tokens.Negate(!pos,!pos));
 {digit}+  => (Tokens.Int(yytext,!pos,!pos));
+{tilde}  => (Tokens.Negate(!pos,!pos));
 {pound}{dquote}{anychar}{dquote} => (Tokens.Char(yytext,!pos,!pos));
 {dquote}{anycharbutquote}*{dquote} => (Tokens.String(yytext,!pos,!pos));
 {alpha}{alphanumeric}*=>
@@ -92,6 +91,8 @@ period=[\.];
       else if tok="fun" then Tokens.Fun(!pos,!pos)
       else if tok="as" then Tokens.As(!pos,!pos)
       else if tok="handle" then Tokens.Handle(!pos,!pos)
+      else if tok="case" then Tokens.Case(!pos,!pos)
+      else if tok="of" then Tokens.Of(!pos,!pos)
       else if tok="raise" then Tokens.Raise(!pos,!pos)
       else if tok="true" then Tokens.True(!pos,!pos)
       else if tok="false" then Tokens.False(!pos,!pos)
