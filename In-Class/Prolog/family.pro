@@ -23,3 +23,11 @@ mother(X,Y):-parent(X,Y), female(X).
 
 append([],L2,L2).
 append([H|T],L2,[H|L3]) :- append(T,L2,L3).
+
+insert(Val,nil,btnode(Val,nil,nil)).
+insert(Val,btnode(RootVal,L,R)),btnode(RootVal,L,NR) :- Val > RootVal, insert(Val,R,NR).
+insert(Val,btnode(RootVal,L,R)),btnode(RootVal,NL,R) :- Val > RootVal, insert(Val,L,NL).
+
+processInserts([],Tree,Tree).
+processInserts([H|],Tree,ResultTree) :- insert(H,Tree,NewTree), processInserts(T,NewTree,ResultTree).
+processInserts(T,NewTree,ResultTree).
