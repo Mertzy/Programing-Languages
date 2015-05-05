@@ -80,22 +80,31 @@ factorial(N,F) :- N>0,N1 is N-1,factorial(N1,F1),F is N * F1.
 
 /* Exercise 10 */
 
-
+fib(0,0).
+fib(1,1).
+fib(F,N) :- N>1,N1 is N-1,N2 is N-2,fib(F1,N1),fib(F2,N2),F is F1+F2.
 
 /* Exercise 11 */
 
-
+fib(N, Val, Last) :- N > 2,N1 is N - 1,fib(N1, Last, Last1),Val is Last + Last1.
 
 /* Exercise 12 */
 
-
+/* Not a clue... */
 
 /* Exercise 13 */
 
-
+count(_, [], 0) :- !. 
+count(X, [X|T], N) :- count(X, T, N2),N is N2 + 1.     
+count(X, [Y|T], N) :- X \= Y,count(X, T, N).
 
 /* Exercise 14 */
 
+/* Not a clue... */
+
+sublist( [], _ ).
+sublist([X|XS],[X|XSS]) :- sublist(XS,XSS).
+sublist([X|XS],[_|XSS]) :- sublist([X|XS],XSS).
 
 
 
