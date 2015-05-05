@@ -31,3 +31,72 @@ insert(Val,btnode(RootVal,L,R)),btnode(RootVal,NL,R) :- Val > RootVal, insert(Va
 processInserts([],Tree,Tree).
 processInserts([H|],Tree,ResultTree) :- insert(H,Tree,NewTree), processInserts(T,NewTree,ResultTree).
 processInserts(T,NewTree,ResultTree).
+
+/* Exercise 1 */
+
+sibling(X,Y) :- parent(Z,X),parent(Z,Y).
+
+/* Exercise 2 */
+
+brother(X,Y) :- parent(Z,X),male(X),parent(Z,Y),X  Y.
+
+/* Exercise 3 */
+
+niece(X,Y) :- female(Y),parent(Z,Y),sibling(X,Z).
+
+/* Exercise 4 */
+
+cousin(Cousin1,Cousin2) :- parent(P1,Cousin1), parent(P2,Cousin2),sibling(P1,P2).
+
+/* Exercise 5 */
+
+ancestor(Ancestor,Descendent) :- parent(Ancestor,Descendent).
+ancestor(Ancestor,Descendent) :- parent(Ancestor,Person),ancestor(Person,Descendent).
+
+/* Exercise 6 */
+
+
+/* Exercise 7 */
+
+palindrome(List) :- reverse(List,List).
+reverse(L1,L2) :- rev(L1,[],L2).
+rev([],L,L).
+rev([X|L],L2,L3) :- rev(L,[X|L2],L3).
+
+/* Exercise 8 */
+
+
+
+/* Exercise 9 */
+
+
+
+/* Exercise 10 */
+
+
+
+/* Exercise 11 */
+
+
+
+/* Exercise 12 */
+
+
+
+/* Exercise 13 */
+
+
+
+/* Exercise 14 */
+
+
+
+
+
+
+
+
+
+
+
+
