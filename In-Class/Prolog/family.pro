@@ -35,6 +35,10 @@ processInserts([H|],Tree,ResultTree) :- insert(H,Tree,NewTree), processInserts(T
 processInserts(T,NewTree,ResultTree).
 */
 
+lookup(X, btnode(X,_,_)).
+lookup(X,btnode(Y,_,L2)) :- X > Y,lookup(X,L2).
+lookup(X,btnode(Y,L1,_)) :- X < Y,lookup(X,L1).
+
 
 /* Exercise 1 */
 
