@@ -91,8 +91,6 @@ sublist( [], _ ).
 sublist([H|T],[H|T1]) :- sublist(T,T1).
 sublist([H|T],[_|T1]) :- sublist([H|T],T1).
 
-threecopies(List) :- 
-
 
 
 
