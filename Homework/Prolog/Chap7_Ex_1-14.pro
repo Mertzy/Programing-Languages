@@ -76,21 +76,24 @@ fib(N, Val, Last) :- N > 2,N1 is N - 1,fib(N1, Last, Last1),Val is Last + Last1.
 
 /* Exercise 12 */
 
-/* Not a clue... */
+zip([],[],[]).
+zip([H1|T1],[H2|T2],[(H1,H2)|L]) :- zip(T1,T2,L).
 
 /* Exercise 13 */
 
-count(_, [], 0) :- !. 
+count(_, [], 0). 
 count(X, [X|T], N) :- count(X, T, N2),N is N2 + 1.     
 count(X, [Y|T], N) :- X \= Y,count(X, T, N).
 
 /* Exercise 14 */
 
-/* Not a clue... */
-
 sublist( [], _ ).
-sublist([X|XS],[X|XSS]) :- sublist(XS,XSS).
-sublist([X|XS],[_|XSS]) :- sublist([X|XS],XSS).
+sublist([H|T],[H|T1]) :- sublist(T,T1).
+sublist([H|T],[_|T1]) :- sublist([H|T],T1).
+
+threecopies(List) :- 
+
+
 
 
 
