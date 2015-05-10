@@ -46,7 +46,7 @@ ancestor(Ancestor,Descendent) :- parent(Ancestor,Person),ancestor(Person,Descend
 /* Exercise 6 */
 
 lengthof([],0).
-lengthof([X|List],Length) :- lengthof(List,Length1),Length=Length1 + 1.
+lengthof([_|List],Length) :- lengthof(List,Length1),Length=Length1 + 1.
 
 odd(List) :- lengthof(List,Length),mod(Length,2)==0.
 
@@ -91,11 +91,7 @@ sublist( [], _ ).
 sublist([H|T],[H|T1]) :- sublist(T,T1).
 sublist([H|T],[_|T1]) :- sublist([H|T],T1).
 
-
-
-
-
-
+threecopies(List) :- append(X,Y,List), append(X,X,Y).
 
 
 
