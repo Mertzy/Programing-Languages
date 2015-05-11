@@ -292,6 +292,11 @@ typecheckTuplePats([],[],[]).
 typecheckTuplePats([H|T],[HT|TTypes],REnv) :- 
         typecheckPat(H,HT,HEnv), typecheckTuplePats(T,TTypes,TEnv), append(HEnv,TEnv,REnv).
 
+typecheckListPats([],_,[]) :- !. %this should never happen
+
+typecheckListPats([H],HT,HEnv) :- typecheckPat(H,HT,HEnv), !.
+typecheckListPats([H|T],HT,Env) :- typecheckPat(H,HT,HEnv), typecheckListPats(T,HT,TEnv), append(HEnv,TEnv,Env), !.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % type check lists with the typecheckListPats predicate here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -306,6 +311,10 @@ typecheckTuplePats([H|T],[HT|TTypes],REnv) :-
 typecheckPat(idpat(nil),listOf(_),[]) :- !.
 
 typecheckPat(idpat(Name),A,[(Name,A)]) :- !.
+
+typecheckPat(listpat(L),listOf(LT),Env) :- typecheckListPats(L,LT,Env), !.
+
+typecheckPat(tuplepat(L),tuple(LT),Env) :- typecheckTuplePats(L,LT,Env), !.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Other patterns go here.
