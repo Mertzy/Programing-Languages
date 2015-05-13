@@ -1,27 +1,88 @@
 Function: main/0
-Constants: None, 'Match Not Found', 0, "hello", 1, True
-Locals: z@0, y@0, x@0
+    Function: f/1
+    Constants: None, 'Match Not Found', 0, True, False, 1
+    Locals: f@Param, x@1
+    FreeVars: g
+    Globals: print, fprint, input, int, len, type, Exception, funlist, concat
+    BEGIN
+        LOAD_FAST 0
+        SELECT_TUPLE 2
+        LOAD_CONST 3
+        COMPARE_OP 2
+        POP_JUMP_IF_FALSE L0
+        STORE_FAST 1
+        LOAD_GLOBAL 0
+        LOAD_FAST 1
+        CALL_FUNCTION 1
+        POP_TOP
+        LOAD_DEREF 0
+        LOAD_FAST 1
+        LOAD_CONST 5
+        BINARY_SUBTRACT
+        CALL_FUNCTION 1
+        RETURN_VALUE
+L0:
+        LOAD_FAST 0
+        SELECT_TUPLE 2
+        LOAD_CONST 4
+        COMPARE_OP 2
+        POP_JUMP_IF_FALSE L1
+        STORE_FAST 1
+        LOAD_DEREF 0
+        LOAD_FAST 1
+        LOAD_CONST 5
+        BINARY_SUBTRACT
+        CALL_FUNCTION 1
+        RETURN_VALUE
+L1:
+        LOAD_GLOBAL 6
+        LOAD_CONST 1
+        CALL_FUNCTION 1
+        RAISE_VARARGS 1
+    END
+    Function: g/1
+    Constants: None, 'Match Not Found', 0, True
+    Locals: g@Param, x@1
+    FreeVars: f
+    Globals: print, fprint, input, int, len, type, Exception, funlist, concat
+    BEGIN
+        LOAD_FAST 0
+        LOAD_CONST 2
+        COMPARE_OP 2
+        POP_JUMP_IF_FALSE L2
+        BUILD_TUPLE 0
+        RETURN_VALUE
+L2:
+        LOAD_FAST 0
+        STORE_FAST 1
+        LOAD_DEREF 0
+        LOAD_CONST 3
+        LOAD_FAST 1
+        BUILD_TUPLE 2
+        CALL_FUNCTION 1
+        RETURN_VALUE
+L3:
+        LOAD_GLOBAL 6
+        LOAD_CONST 1
+        CALL_FUNCTION 1
+        RAISE_VARARGS 1
+    END
+Constants: None, 'Match Not Found', 0, code(f), code(g), 10
+CellVars: g, f
 Globals: print, fprint, input, int, len, type, Exception, funlist, concat
 BEGIN
+    LOAD_CLOSURE 0
+    BUILD_TUPLE 1
     LOAD_CONST 3
+    MAKE_CLOSURE 0
+    STORE_DEREF 1
+    LOAD_CLOSURE 1
+    BUILD_TUPLE 1
     LOAD_CONST 4
+    MAKE_CLOSURE 0
+    STORE_DEREF 0
+    LOAD_DEREF 0
     LOAD_CONST 5
-    BUILD_TUPLE 3
-    BUILD_FUNLIST 1
-    SELECT_FUNLIST
-    SELECT_TUPLE 3
-    STORE_FAST 2
-    STORE_FAST 1
-    STORE_FAST 0
-    JUMP_FORWARD L1
-L0:
-    LOAD_GLOBAL 6
-    LOAD_CONST 1
-    CALL_FUNCTION 1
-    RAISE_VARARGS 1
-L1:
-    LOAD_GLOBAL 0
-    LOAD_FAST 2
     CALL_FUNCTION 1
     POP_TOP
     LOAD_CONST 0

@@ -247,6 +247,10 @@ find(Env,Name,Type) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % The typecheckMatch predicate goes here.
+
+typecheckMatch(Env,Name,match(Pat,Exp)) :- find(Env,Name,fn(PT,ET)), typecheckPat(Pat,PT,PEnv), append(PEnv,Env,EEnv), typecheckExp(EEnv,)
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 typecheckMatches(_,_,[]).
 
@@ -362,6 +366,10 @@ typecheckTuple(Env,[Exp|T],[ExpT|TailType]) :- typecheckExp(Env,Exp,ExpT), typec
 % Typechecking sequences goes here with the typecheckSequence predicate that you write here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+typecheckSequence(_,[],_) :- throw(typeerror('typecheck of emptysequence')), !.
+typecheckSequence(Env,[H],HT) :- typecheckExp(Env,H,HT), !.
+typecheckSequence(Env,[H|T],LastType) :- typecheckExp(Env,H,_), typecheckSequence(Env,T,LastType), !.
+
 typecheckList(_,[],_).
 
 typecheckList(Env,[H|T],A) :- typecheckExp(Env,H,A), typecheckList(Env,T,A).
@@ -415,11 +423,11 @@ typecheckExp(Env,letdec(D,Seq), T) :-
 
 typecheckExp(Env,listcon(L),listOf(T)) :- typecheckList(Env,L,T).
 
-typecheckExp(_,int(_),int).
+typecheckExp(_,int(_),int) :- !.
 
-typecheckExp(_,bool(_),bool).
+typecheckExp(_,bool(_),bool) :- !.
 
-typecheckExp(_,str(_),str).
+typecheckExp(_,str(_),str) :- !.
 
 typecheckExp(Env,tuple(L),tuple(T)) :- typecheckTuple(Env,L,T). 
 

@@ -1,6 +1,14 @@
 letdec(
-   bindval(listpat([tuplepat([idpat('x')   ,idpat('y')   ,idpat('z')])]),listcon([tuple([str('"hello"')   ,int('1')   ,bool('true')])])),
+   funmatches([
+   funmatch('f',[
+      match(tuplepat([boolpat(true)      ,idpat('x')])      ,      expsequence([
+apply(id('println'),id('x'))         ,apply(id('g'),apply(id('-'),tuple([id('x')         ,int('1')])))      ])
+      )      ,      match(tuplepat([boolpat(false)      ,idpat('x')])      ,apply(id('g'),apply(id('-'),tuple([id('x')      ,int('1')])))      )   ])
+   ,   funmatch('g',[
+      match(intpat(0)      ,tuple([])      )      ,      match(idpat('x')      ,apply(id('f'),tuple([bool('true')      ,id('x')]))      )   ])
+   ])
+,
    [
-apply(id('println'),id('x'))
+apply(id('g'),int('10'))
    ])
 .
