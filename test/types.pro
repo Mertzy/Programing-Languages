@@ -62,8 +62,11 @@ printExp(Indent, ifthen(E1,E2,E3)) :-
         print('if '), printExp(Indent,E1), print(' then '), printExp(Indent, E2), 
         print(' else '), printExp(Indent,E3).
 
+%whiledo not working correctly
+/*
 printExp(Indent, whiledo(E1,E2)) :- 
         print('while '), printExp(Indent,E1), print(' do '), printExp(Indent, E2).
+*/
 
 printExp(Indent, caseof(E,ML)) :- 
         print('case '), printExp(Indent,E), print(' of '), printMatchList(Indent,ML).
@@ -297,28 +300,15 @@ typecheckFuns(Env,[FunMatch|Tail]) :- typecheckFun(Env,FunMatch), typecheckFuns(
 
 typecheckTuplePats([],[],[]).
 
-typecheckTuplePats([H|T],[HT|TTypes],REnv) :- 
-        typecheckPat(H,HT,HEnv),
-        typecheckTuplePats(T,TTypes,TEnv),
-        append(HEnv,TEnv,REnv).
-
-%% Match exppats
+typecheckTuplePats([H|T],[HT|TTypes],REnv) :- typecheckPat(H,HT,HEnv),typecheckTuplePats(T,TTypes,TEnv),append(HEnv,TEnv,REnv).
 
 typecheckExpPats([], _, []) :- !.
 typecheckExpPats([H], HT, HEnv) :- typecheckPat(H, HT, HEnv), !.
-typecheckExpPats([H|T], _, _) :-
-  typecheckPat(H, HT, HEnv),
-  typecheckExpPats(T, HT, TEnv),
-  append(HEnv, TEnv, _).
-
-%% Match ListPat
+typecheckExpPats([H|T], _, _) :- typecheckPat(H, HT, HEnv),typecheckExpPats(T, HT, TEnv),append(HEnv, TEnv, _).
 
 typecheckListPats([], _, []) :- !.
 typecheckListPats([H], HT, HEnv) :- typecheckPat(H, HT, HEnv), !.
-typecheckListPats([H|T], _, _) :-
-  typecheckPat(H, HT, HEnv),
-  typecheckListPats(T, HT, TEnv),
-  append(HEnv, TEnv, _).
+typecheckListPats([H|T], _, _) :- typecheckPat(H, HT, HEnv),typecheckListPats(T, HT, TEnv),append(HEnv, TEnv, _).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % type check lists with the typecheckListPats predicate here.
@@ -345,11 +335,6 @@ typecheckPat(tuplepat(L), tuple(LT), Env) :- typecheckTuplePats(L, LT, Env), !.
 typecheckPat(boolpat(_), bool, _) :- !.
 
 typecheckPat(intpat(_), int, _) :- !.
-
-%% typecheckPat(expsequence(L), LT, Env) :-
-%%   print('exp seq'),
-%%   typecheckExpPats(L, LT, Env),
-%%   !.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Other patterns go here.
@@ -390,10 +375,7 @@ typecheckDec(Env,funmatches(L),NewEnv) :-
 /******************************************************************************************************/
 
 typecheckTuple(_,[],[]).
-
-typecheckTuple(Env,[Exp|T],[ExpT|TailType]) :-
-  typecheckExp(Env,Exp,ExpT),
-  typecheckTuple(Env,T,TailType).
+typecheckTuple(Env,[Exp|T],[ExpT|TailType]) :- typecheckExp(Env,Exp,ExpT),typecheckTuple(Env,T,TailType).
 
 typecheckSequence(_, [], _) :- !.
 typecheckSequence(Env, [H|T], HT) :- typecheckExp(Env,H,HT), typecheckSequence(Env, T, HT).

@@ -1,14 +1,52 @@
 letdec(
-   funmatches([
-   funmatch('f',[
-      match(tuplepat([boolpat(true)      ,idpat('x')])      ,      expsequence([
-apply(id('println'),id('x'))         ,apply(id('g'),apply(id('-'),tuple([id('x')         ,int('1')])))      ])
-      )      ,      match(tuplepat([boolpat(false)      ,idpat('x')])      ,apply(id('g'),apply(id('-'),tuple([id('x')      ,int('1')])))      )   ])
-   ,   funmatch('g',[
-      match(intpat(0)      ,tuple([])      )      ,      match(idpat('x')      ,apply(id('f'),tuple([bool('true')      ,id('x')]))      )   ])
-   ])
-,
+   bindval(idpat('zero'),int('0')),
    [
-apply(id('g'),int('10'))
+    letdec(
+       funmatches([
+       funmatch('fib',[
+          match(idpat('n')          ,          letdec(
+             bindval(idpat('i'),apply(id('ref'),id('zero'))),
+             [
+              letdec(
+                 bindval(idpat('current'),apply(id('ref'),int('0'))),
+                 [
+                  letdec(
+                     bindval(idpat('next'),apply(id('ref'),int('1'))),
+                     [
+                      letdec(
+                         bindval(idpat('tmp'),apply(id('ref'),int('0'))),
+                         [
+                          whiledo(
+apply(id('<'),tuple([apply(id('!'),id('i'))                             ,id('n')]))
+                          ,
+                             expsequence([
+apply(id(':='),tuple([id('tmp')                                ,apply(id('+'),tuple([apply(id('!'),id('next'))                                ,apply(id('!'),id('current'))]))]))                                ,apply(id(':='),tuple([id('current')                                ,apply(id('!'),id('next'))]))                                ,apply(id(':='),tuple([id('next')                                ,apply(id('!'),id('tmp'))]))                                ,apply(id(':='),tuple([id('i')                                ,apply(id('+'),tuple([apply(id('!'),id('i'))                                ,int('1')]))]))                             ])
+
+                          )
+                          ,apply(id('!'),id('current'))
+                         ])
+
+                     ])
+
+                 ])
+
+             ])
+          )       ])
+       ])
+,
+       [
+        letdec(
+           bindval(idpat('x'),apply(id('Int.fromString'),apply(id('input'),str('"Please enter an integer: "')))),
+           [
+            letdec(
+               bindval(idpat('r'),apply(id('fib'),id('x'))),
+               [
+apply(id('print'),str('"Fib("'))                ,apply(id('print'),id('x'))                ,apply(id('print'),str('") is "'))                ,apply(id('println'),id('r'))
+               ])
+
+           ])
+
+       ])
+
    ])
 .

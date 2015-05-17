@@ -29,7 +29,7 @@ printExp(_, str(S)) :-  print(S), !.
 
 printExp(_, bool(B)) :- print(B), !.
 
-printExp(_, id(Name)) :- print(Name), !. 
+printExp(_, id(Name)) :- print(Name), !.
 
 printExp(Indent, listcon(L)) :- print('['), printExpList(Indent,L), print(']').
 
@@ -242,20 +242,24 @@ find(Env,Name,Type) :-
         print(' in environment : '), print(Env), nl, throw(typeerror('unbound identifier')).
 
 /******************************************************************************************************/
-/* The typecheckMatches code typechecks each match. */
+/* The typecheckMatch code typechecks each match. */
 /******************************************************************************************************/
 
+typecheckMatch(Env, Name, match(Pat, Exp)) :-
+  find(Env, Name, fn(PT, ET)),
+  typecheckPat(Pat, PT, PEnv),
+  append(PEnv, Env, EEnv),
+  typecheckExp(EEnv, Exp, ET),
+  !.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% The typecheckMatch predicate goes here.
-
-typecheckMatch(Env,Name,match(Pat,Exp)) :- find(Env,Name,fn(PT,ET)), typecheckPat(Pat,PT,PEnv), append(PEnv,Env,EEnv), typecheckExp(EEnv,)
-
-
+% The typecheckMatches predicate goes here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 typecheckMatches(_,_,[]).
 
 typecheckMatches(Env,Name,[Match|Tail]) :- 
-        typecheckMatch(Env,Name,Match), typecheckMatches(Env,Name,Tail).
+        typecheckMatch(Env,Name,Match),
+        typecheckMatches(Env,Name,Tail).
 
 /******************************************************************************************************/
 /* This is an important predicate. The gatherFuns predicate goes
@@ -294,12 +298,27 @@ typecheckFuns(Env,[FunMatch|Tail]) :- typecheckFun(Env,FunMatch), typecheckFuns(
 typecheckTuplePats([],[],[]).
 
 typecheckTuplePats([H|T],[HT|TTypes],REnv) :- 
-        typecheckPat(H,HT,HEnv), typecheckTuplePats(T,TTypes,TEnv), append(HEnv,TEnv,REnv).
+        typecheckPat(H,HT,HEnv),
+        typecheckTuplePats(T,TTypes,TEnv),
+        append(HEnv,TEnv,REnv).
 
-typecheckListPats([],_,[]) :- !. %this should never happen
+%% Match exppats
 
-typecheckListPats([H],HT,HEnv) :- typecheckPat(H,HT,HEnv), !.
-typecheckListPats([H|T],HT,Env) :- typecheckPat(H,HT,HEnv), typecheckListPats(T,HT,TEnv), append(HEnv,TEnv,Env), !.
+typecheckExpPats([], _, []) :- !.
+typecheckExpPats([H], HT, HEnv) :- typecheckPat(H, HT, HEnv), !.
+typecheckExpPats([H|T], _, _) :-
+  typecheckPat(H, HT, HEnv),
+  typecheckExpPats(T, HT, TEnv),
+  append(HEnv, TEnv, _).
+
+%% Match ListPat
+
+typecheckListPats([], _, []) :- !.
+typecheckListPats([H], HT, HEnv) :- typecheckPat(H, HT, HEnv), !.
+typecheckListPats([H|T], _, _) :-
+  typecheckPat(H, HT, HEnv),
+  typecheckListPats(T, HT, TEnv),
+  append(HEnv, TEnv, _).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % type check lists with the typecheckListPats predicate here.
@@ -309,23 +328,35 @@ typecheckListPats([H|T],HT,Env) :- typecheckPat(H,HT,HEnv), typecheckListPats(T,
 /* typechecking a pattern does not need an environment, but instead returns a new environment
    of the identifiers in the pattern. The typecheckPat predicate is called as  
    typecheckPat(Pat,PatType,PatEnv) where PatType and PatEnv are the type and environment 
-   of the pattern. */
+   of the pattern.
+
+   Inference rule for sequential execution on page 316
+*/
 /******************************************************************************************************/
 
 typecheckPat(idpat(nil),listOf(_),[]) :- !.
 
 typecheckPat(idpat(Name),A,[(Name,A)]) :- !.
 
-typecheckPat(listpat(L),listOf(LT),Env) :- typecheckListPats(L,LT,Env), !.
+typecheckPat(listpat(L), listOf(LT), Env) :- typecheckListPats(L, LT, Env), !. 
 
-typecheckPat(tuplepat(L),tuple(LT),Env) :- typecheckTuplePats(L,LT,Env), !.
+typecheckPat(tuplepat(L), tuple(LT), Env) :- typecheckTuplePats(L, LT, Env), !.
+
+typecheckPat(boolpat(_), bool, _) :- !.
+
+typecheckPat(intpat(_), int, _) :- !.
+
+%% typecheckPat(expsequence(L), LT, Env) :-
+%%   print('exp seq'),
+%%   typecheckExpPats(L, LT, Env),
+%%   !.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Other patterns go here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 typecheckPat(A,_,_) :- 
-        nl, nl, print('Typechecker Error: Unknown pattern '), print(A), 
+        nl, nl, print('Typechecker Error: Unknown pattern '), print(A), nl,
         nl, nl, throw(error('unknown pattern')).
 
 /******************************************************************************************************/
@@ -360,15 +391,16 @@ typecheckDec(Env,funmatches(L),NewEnv) :-
 
 typecheckTuple(_,[],[]).
 
-typecheckTuple(Env,[Exp|T],[ExpT|TailType]) :- typecheckExp(Env,Exp,ExpT), typecheckTuple(Env,T,TailType).
+typecheckTuple(Env,[Exp|T],[ExpT|TailType]) :-
+  typecheckExp(Env,Exp,ExpT),
+  typecheckTuple(Env,T,TailType).
+
+typecheckSequence(_, [], _) :- !.
+typecheckSequence(Env, [H|T], HT) :- typecheckExp(Env,H,HT), typecheckSequence(Env, T, HT).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Typechecking sequences goes here with the typecheckSequence predicate that you write here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-typecheckSequence(_,[],_) :- throw(typeerror('typecheck of emptysequence')), !.
-typecheckSequence(Env,[H],HT) :- typecheckExp(Env,H,HT), !.
-typecheckSequence(Env,[H|T],LastType) :- typecheckExp(Env,H,_), typecheckSequence(Env,T,LastType), !.
 
 typecheckList(_,[],_).
 
@@ -387,7 +419,7 @@ typecheckExp(Env,handlexp(Exp1,Matches), _) :-
         print('Expression type was '), printType(T, _), print(' and handler type is '), 
         printType(S,_), nl, throw(typeerror('expression and handler typemismatch')).
 
-typecheckExp(Env,expsequence(L),T) :- typecheckSequence(Env,L,T).
+typecheckExp(Env, expsequence(L), T) :- typecheckSequence(Env,L,T).
 
 typecheckExp(_,id(nil),listOf(_)) :- !.
 
@@ -423,17 +455,18 @@ typecheckExp(Env,letdec(D,Seq), T) :-
 
 typecheckExp(Env,listcon(L),listOf(T)) :- typecheckList(Env,L,T).
 
-typecheckExp(_,int(_),int) :- !.
+typecheckExp(_,int(_),int).
 
-typecheckExp(_,bool(_),bool) :- !.
+typecheckExp(_,bool(_),bool).
 
-typecheckExp(_,str(_),str) :- !.
+typecheckExp(_,str(_),str).
 
-typecheckExp(Env,tuple(L),tuple(T)) :- typecheckTuple(Env,L,T). 
+typecheckExp(Env,tuple(L),tuple(T)) :- typecheckTuple(Env,L,T).
 
-typecheckExp(_,Exp,_) :- 
-        nl, nl, print('Typechecker Error: Unknown expression '), print(Exp),
-        nl, nl, throw(error('typecheckExp: unknown expression')).
+typecheckExp(A,Exp,B) :-
+  nl, nl, print('Error in typecheckExp' + A + Exp + B),
+  nl, nl, print('Typechecker Error: Unknown expression '), print(Exp), nl, nl.
+  %% nl, nl, throw(error('typecheckExp: unknown expression')).
 
 /******************************************************************************************************/
 /* Here we have various error and status messages that may be displayed during type checking. */ 
