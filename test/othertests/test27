@@ -1,4 +1,0 @@
-let val y = 10
-in
-  println ((fn x => x*y + 1) 6) 
-end

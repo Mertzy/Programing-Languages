@@ -1,4 +1,0 @@
-let val x = Int.fromString(input("Please enter an integer: "))
-in
-  println (x+1)
-end
